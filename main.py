@@ -202,7 +202,7 @@ def handle_row(wd: webdriver.Chrome, df_row):
 
     time.sleep(2)
 
-    nv1 = wd.find_element(By.XPATH,  "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[10]/div[3]/div/div/div/input")
+    nv1 = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[10]/div[3]/div/div/div/input")
     nv1.send_keys("trường thpt trần hưng đạo".upper())
 
     nv1.send_keys(Keys.ARROW_DOWN)
@@ -210,6 +210,16 @@ def handle_row(wd: webdriver.Chrome, df_row):
 
     nop_hs = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[1]/div/button")
     nop_hs.click()
+
+
+def load_page():
+    browser.get(url)
+
+    dkts = WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.XPATH, "/html/body/div/div[3]/div[2]/div[1]/div/div[3]/div/button[4]"))
+    )
+
+    dkts.click()
 
 
 df = pd.read_excel("TTT10nhap.xlsx")
@@ -220,17 +230,16 @@ df = df.drop(["Unnamed: 7", "Unnamed: 8"], axis=1)
 chrome_options = Options()
 chrome_options.add_argument("--start-maximized")
 browser = webdriver.Chrome(options=chrome_options)
-browser.get("https://daknong.tuyensinhdaucap.com/admission/25a9adf7-ab1c-4caf-8368-654ab32c9e40")
 
-dkts = WebDriverWait(browser, 10).until(
-    EC.presence_of_element_located((By.XPATH, "/html/body/div/div[3]/div[2]/div[1]/div/div[3]/div/button[4]"))
-)
+url = "https://daknong.tuyensinhdaucap.com/admission/25a9adf7-ab1c-4caf-8368-654ab32c9e40"
+load_page()
 
-dkts.click()
-
-for row in df.itertuples():
+for i, row in enumerate(df.itertuples(), start=1):
     try:
         handle_row(browser, row)
+        time.sleep(5)
+        if i != len(df):
+            load_page()
     except Exception as e:
         print(e)
 
