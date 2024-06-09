@@ -32,6 +32,14 @@ def handle_dropdownlist_div(wd, input_xpath, close_btn_xpath, data):
     elem.send_keys(Keys.ENTER)
 
 
+def xu_ly_hanh_kiem_hoc_luc(wd, div_xpath, data):
+    lop_hl = wd.find_element(By.XPATH, div_xpath)
+    lop_hl.click()
+
+    hl_option = wd.find_element(By.XPATH, f"//li[text()='{data}']")
+    hl_option.click()
+
+
 def handle_row(wd: webdriver.Chrome, df_row):
     cccd = wd.find_element(By.XPATH,
                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[1]/div[2]/div/div[1]/div/div/input")
@@ -112,7 +120,8 @@ def handle_row(wd: webdriver.Chrome, df_row):
     giam_ho = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[4]/div[1]/div/input")
     giam_ho.send_keys(df_row._13.capitalize())
 
-    truong_thcs = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[7]/div[1]/div/div/input")
+    truong_thcs = wd.find_element(By.XPATH,
+                                  "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[7]/div[1]/div/div/input")
     truong_thcs.send_keys(df_row._15.title())
 
     truong_thcs.send_keys(Keys.ARROW_DOWN)
@@ -141,6 +150,66 @@ def handle_row(wd: webdriver.Chrome, df_row):
     xl_option.click()
 
     # xu ly hanh kiem - hoc luc
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[1]/div/div[1]/div/div",
+                            df_row.HL6.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[1]/div/div[2]/div/div",
+                            df_row.HK6.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[2]/div/div[1]/div/div",
+                            df_row.HL7.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[2]/div/div[2]/div/div",
+                            df_row.HK7.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[3]/div/div[1]/div/div",
+                            df_row.HL8.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[3]/div/div[2]/div/div",
+                            df_row.HK8.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[4]/div/div[1]/div/div",
+                            df_row.HL9.capitalize()
+                            )
+
+    xu_ly_hanh_kiem_hoc_luc(wd,
+                            "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[8]/div[4]/div/div[2]/div/div",
+                            df_row.HK9.capitalize()
+                            )
+
+    time.sleep(2)
+    tbm = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[9]/div[1]/div/input")
+    tbm.send_keys(str(df_row.TBM).replace('.', ','))
+
+    toan_cc = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[9]/div[2]/div/input")
+    toan_cc.send_keys(str(df_row.TOÁN).replace('.', ','))
+
+    van_cc = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[9]/div[3]/div/input")
+    van_cc.send_keys(str(df_row.VĂN).replace('.', ','))
+
+    time.sleep(2)
+
+    nv1 = wd.find_element(By.XPATH,  "/html/body/div/div[3]/div[2]/div[5]/div/div[2]/div[10]/div[3]/div/div/div/input")
+    nv1.send_keys("trường thpt trần hưng đạo".upper())
+
+    nv1.send_keys(Keys.ARROW_DOWN)
+    nv1.send_keys(Keys.ENTER)
+
+    nop_hs = wd.find_element(By.XPATH, "/html/body/div/div[3]/div[2]/div[5]/div/div[1]/div/button")
+    nop_hs.click()
 
 
 df = pd.read_excel("TTT10nhap.xlsx")
@@ -165,5 +234,5 @@ for row in df.itertuples():
     except Exception as e:
         print(e)
 
-time.sleep(3)
+time.sleep(5)
 browser.quit()
